@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: hvac-ai-agent
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5-mini
+      - key: DATABASE_PATH
+        value: /var/data/hvac_agent.db
+    disk:
+      name: hvac-agent-data
+      mountPath: /var/data
+      sizeGB: 1
